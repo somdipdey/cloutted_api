@@ -1,0 +1,15 @@
+{
+  "name": "cloutouts-api",
+  "version": "0.0.1",
+  "description": "This the api for cloutouts",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7"
+  }
+}
