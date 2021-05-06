@@ -57,7 +57,7 @@ const server = app.listen(PORT, () =>
 );
 
 // dev util
-if (process.env.PRINT_ROUTES) {
+if (process.env.NODE_ENV == "DEV" && process.env.PRINT_ROUTES) {
   function print(path, layer) {
     if (layer.route) {
       layer.route.stack.forEach(
@@ -69,7 +69,7 @@ if (process.env.PRINT_ROUTES) {
       );
     } else if (layer.method) {
       console.log(
-        "%s /%s",
+        "%s \t \x1b[33m/%s\x1b[0m",
         layer.method.toUpperCase(),
         path.concat(split(layer.regexp)).filter(Boolean).join("/")
       );
@@ -93,6 +93,8 @@ if (process.env.PRINT_ROUTES) {
     }
   }
 
-  console.log("\n");
+  console.log("\n\x1b[1m%s\x1b[0m", "AVAILABLE ROUTES");
+  console.log("------------------------------------------------------------");
   app._router.stack.forEach(print.bind(null, []));
+  console.log("------------------------------------------------------------");
 }
