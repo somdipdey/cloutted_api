@@ -16,12 +16,19 @@ const Post = require("../../models/Post");
 */
 router.get("/", (req, res) => {
   const payload = req.body;
-  Post.find({}, { limit: 5 }, (err, posts) => {
+  const limit = 100;
+  findPosts({}, { limit }, (err, posts) => {
     if (err) {
       console.log(err);
-      res.status(500).json({ success: false, message: "Something went wrong" });
     }
-    res.status(200).json({ success: true, message: posts.slice(0, 2) });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Successfully fetched posts",
+        dataLength: limit,
+        posts,
+      });
   });
 });
 

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 //publickey schema
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   PublicKeyBase58Check: {
     type: String,
     required: true,
