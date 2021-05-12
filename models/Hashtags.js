@@ -12,13 +12,4 @@ module.exports = findHashtags = (query, options, cb) => {
   });
 };
 
-module.exports = findHashtagsBySearchTerm = (query, options, cb) => {
-  mongoose.connection.db.collection("hashtags", (err, collection) => {
-    if (err) {
-      console.log(err);
-    }
-    collection.find({"hashtag" : {$regex: query, options }}).toArray(cb);
-  });
-};
-
 const Hashtags = (module.exports = mongoose.models.hashtags);

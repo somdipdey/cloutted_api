@@ -7,37 +7,40 @@ const mongoose = require("mongoose");
 const router = require("express").Router();
 
 // models
-const Post = require("../../models/Post");
+const HashtagTrends = require("../../models/HashtagTrends");
 
 /*
-@route: GET /v1/communities/
-@desc: get all communities
+@route: GET /v1/hashtagtrends/
+@desc: get all hashtagtrends
 @access: PUBLIC
 */
 router.get("/", (req, res) => {
   const payload = req.body;
-  const limit = 300;
-  findPosts({}, { limit }, (err, posts) => {
+  const { searchLimit } = payload;
+
+  const limit = searchLimit || 10;
+  const sort = { count: -1 };
+  findHashtagTrends({}, { limit, sort }, (err, hashtagTrends) => {
     if (err) {
       console.log(err);
       res.status(500).json({ success: false, message: "Something went wrong" });
     }
     res.status(200).json({
       success: true,
-      message: "Successfully fetched posts",
+      message: "Successfully fetched hashtagTrends",
       dataLength: limit,
-      posts,
+      hashtagTrends,
     });
   });
 });
 
 /*
-@route: POST /v1/communities/
-@desc: post communities to db
+@route: POST /v1/hashtagtrends/
+@desc: post hashtagtrends to db
 @access: PUBLIC
 */
 router.post("/", (req, res) => {
-  res.status(200).json("Route not implemented yet");
+  res.status(200).json("Route not implemented");
 });
 
 module.exports = router;

@@ -16,19 +16,23 @@ const Hashtags = require("../../models/Hashtags");
 */
 router.get("/", (req, res) => {
   const payload = req.body;
-  const limit = 300;
-  findHashtags({}, { limit }, (err, hashtags) => {
+  const { searchTerm, searchLimit } = payload;
+
+  if (!searchTerm)
+    res.status(403).json({ success: false, message: "searchTerm is required" });
+  const limit = searchLimit || 300;
+  const query = { hashtag: { $regex: searchTerm, $options: "i" } };
+  findHashtags(query, { limit }, (err, hashtags) => {
     if (err) {
       console.log(err);
+      res.status(500).json({ success: false, message: "Something went wrong" });
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Successfully fetched hashtags",
-        dataLength: limit,
-        hashtags,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched hashtags",
+      dataLength: limit,
+      hashtags,
+    });
   });
 });
 
@@ -38,7 +42,7 @@ router.get("/", (req, res) => {
 @access: PUBLIC
 */
 router.post("/", (req, res) => {
-  res.status(200).json("got hashtags to add to db");
+  res.status(200).json("Route not implemented");
 });
 
 module.exports = router;
