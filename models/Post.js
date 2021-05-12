@@ -1,11 +1,7 @@
-// const mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
-// // //post schema
-// // const postSchema = mongoose.Schema({
-// //   createdOn: {
-// //     type: Date,
-// //     default: new Date(),
-// //   },
-// // });
+//post schema
+const postSchema = mongoose.Schema({});
 
-// const Post = (module.exports = mongoose.connection.db.collection("posts"));
+const Post = (module.exports =
+  mongoose.models.post || mongoose.model("posts", postSchema));
