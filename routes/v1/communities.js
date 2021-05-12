@@ -16,7 +16,7 @@ const Post = require("../../models/Post");
 */
 router.get("/", (req, res) => {
   const payload = req.body;
-  const limit = 100;
+  const limit = 300;
   findPosts({}, { limit }, (err, posts) => {
     if (err) {
       console.log(err);
