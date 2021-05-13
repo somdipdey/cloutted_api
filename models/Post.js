@@ -24,7 +24,6 @@ module.exports = addPost = (data) => {
   mongoose.connection.db.collection("posts", (err, collection) => {
     if (err) console.log(err);
     const res = collection.insertOne(data);
-    (async () => console.log(await res))();
   });
 };
 
