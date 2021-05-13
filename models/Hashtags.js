@@ -12,4 +12,10 @@ module.exports = findHashtags = (query, options, cb) => {
   });
 };
 
+module.exports = addHashTag = (data) =>
+  mongoose.connection.db.collection("hashtags", (err, collection) => {
+    if (err) console.log(err);
+    const res = collection.insertOne(data);
+  });
+
 const Hashtags = (module.exports = mongoose.models.hashtags);
