@@ -46,6 +46,8 @@ router.get("/", (req, res) => {
 router.get("/by-user", async (req, res) => {
   const payload = req.body;
 
+  const { numToFetch } = payload;
+
   let PublicKeyBase58Check = req.query.PublicKeyBase58Check;
   const username = req.query.username;
 
@@ -55,6 +57,12 @@ router.get("/by-user", async (req, res) => {
         success: false,
         message: "Either username or PublicKeyBase58Check is required",
       });
+
+    const PublicKeyBase58Check = "";
+    const Username = "";
+    const UsernamePrefix = username;
+    const NumToFetch = numToFetch || 300;
+    const ReaderPublicKeyBase58Check = "";
 
     const dataString = {
       PublicKeyBase58Check,
@@ -95,8 +103,6 @@ router.get("/by-user", async (req, res) => {
       }
     }
   }
-
-  return;
 
   const url = bitclout_config.genUrl(
     bitclout_config.endPoints.getPostForPubKey
