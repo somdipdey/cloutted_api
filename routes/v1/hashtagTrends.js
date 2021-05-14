@@ -16,11 +16,16 @@ const HashtagTrends = require("../../models/HashtagTrends");
 */
 router.get("/", (req, res) => {
   const payload = req.query;
-  const { searchLimit } = payload;
+  const { searchLimit, searchKey } = payload;
+
+  let query = {};
+
+  if (searchKey)
+    query = { ...query, hashtag: { $regex: searchKey, $options: "i" } };
 
   const limit = searchLimit || 10;
   const sort = { count: -1 };
-  findHashtagTrends({}, { limit, sort }, (err, hashtagTrends) => {
+  findHashtagTrends(query, { limit, sort }, (err, hashtagTrends) => {
     if (err) {
       console.log(err);
       res.status(500).json({ success: false, message: "Something went wrong" });

@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
     return res
       .status(400)
       .json({ success: false, message: "searchTerm is required" });
-  const limit = parseInt(searchLimit) || 300;
+  const limit = parseInt(searchLimit) || 100;
   const query = { hashtag: { $regex: searchTerm, $options: "i" } };
   findHashtags(query, { limit }, (err, hashtags) => {
     if (err) {
