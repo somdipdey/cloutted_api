@@ -61,7 +61,7 @@ router.get("/by-user", async (req, res) => {
     const PublicKeyBase58Check = "";
     const Username = "";
     const UsernamePrefix = username;
-    const NumToFetch = numToFetch || 300;
+    const NumToFetch = numToFetch || 1;
     const ReaderPublicKeyBase58Check = "";
 
     const dataString = {

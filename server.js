@@ -46,11 +46,13 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 const hashtags = require("./routes/v1/hashtags");
 const posts = require("./routes/v1/posts");
 const hashtagtrends = require("./routes/v1/hashtagTrends");
+const users = require("./routes/v1/users");
 
 // register routes
 app.use("/v1/hashtags", hashtags);
 app.use("/v1/hashtagtrends", hashtagtrends);
 app.use("/v1/posts", posts);
+app.use("/v1/users", users);
 
 // 404 route
 app.get("*", (_, res) => {
