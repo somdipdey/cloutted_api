@@ -4,6 +4,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
+const cors = require("cors");
 
 // import local packages and files
 const db_config = require("./config/database");
@@ -11,15 +12,21 @@ const db_config = require("./config/database");
 // initlialize app
 const app = express();
 
+// .MIDDLEWARES
+
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
 
 //parse json
 app.use(express.json());
 
+// cors
+app.use(cors());
+
 // set staic folder
 app.use(express.static(path.join(__dirname, "public")));
 
+// .DATABASE
 // database connection
 mongoose.connect(db_config.dbURI, db_config.options);
 let db = mongoose.connection;
@@ -32,7 +39,7 @@ db.once("open", () => {
 // check for db for error
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-// configure paths
+// .CONFIGURE PATHS
 
 // import router files
 // api version 1

@@ -1,8 +1,5 @@
 const mongoose = require("mongoose");
 
-//post schema
-const hashtagsSchema = new mongoose.Schema();
-
 module.exports = findHashtags = (query, options, cb) => {
   mongoose.connection.db.collection("hashtags", (err, collection) => {
     if (err) {

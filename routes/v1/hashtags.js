@@ -15,12 +15,13 @@ const Hashtags = require("../../models/Hashtags");
 @access: PUBLIC
 */
 router.get("/", (req, res) => {
-  const payload = req.body;
-  const { searchTerm, searchLimit } = payload;
+  const { searchTerm, searchLimit } = req.query;
 
   if (!searchTerm)
-    res.status(403).json({ success: false, message: "searchTerm is required" });
-  const limit = searchLimit || 300;
+    return res
+      .status(400)
+      .json({ success: false, message: "searchTerm is required" });
+  const limit = parseInt(searchLimit) || 300;
   const query = { hashtag: { $regex: searchTerm, $options: "i" } };
   findHashtags(query, { limit }, (err, hashtags) => {
     if (err) {

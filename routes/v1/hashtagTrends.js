@@ -15,7 +15,7 @@ const HashtagTrends = require("../../models/HashtagTrends");
 @access: PUBLIC
 */
 router.get("/", (req, res) => {
-  const payload = req.body;
+  const payload = req.query;
   const { searchLimit } = payload;
 
   const limit = searchLimit || 10;

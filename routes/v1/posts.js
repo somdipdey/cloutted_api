@@ -44,7 +44,7 @@ router.get("/", (req, res) => {
 @access: PUBLIC
 */
 router.get("/by-user", async (req, res) => {
-  const payload = req.body;
+  const payload = req.query;
 
   const { numToFetch } = payload;
 

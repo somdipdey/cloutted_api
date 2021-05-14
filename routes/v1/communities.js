@@ -15,20 +15,18 @@ const Post = require("../../models/Post");
 @access: PUBLIC
 */
 router.get("/", (req, res) => {
-  const payload = req.body;
+  const payload = req.query;
   const limit = 300;
   findPosts({}, { limit }, (err, posts) => {
     if (err) {
       console.log(err);
     }
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Successfully fetched posts",
-        dataLength: limit,
-        posts,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched posts",
+      dataLength: limit,
+      posts,
+    });
   });
 });
 
