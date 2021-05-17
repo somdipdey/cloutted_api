@@ -62,13 +62,14 @@ router.get("/get-user", async (req, res) => {
 
       if (ProfilesFound) {
         const user = ProfilesFound[0];
-        if (user)
+        if (user) {
+          delete user.Posts;
           return res.json({
             success: true,
             message: "Successfully fetched user profile",
             user,
           });
-
+        }
         res.status(400).json({
           success: false,
           message:

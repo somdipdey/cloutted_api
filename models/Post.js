@@ -21,7 +21,7 @@ module.exports = postDoesExist = (PostHashHex) =>
   });
 
 module.exports = addPost = (data) => {
-  mongoose.connection.db.collection("posts", (err, collection) => {
+  mongoose.connection.db.collection("posts2", (err, collection) => {
     if (err) console.log(err);
     const res = collection.insertOne(data);
   });
