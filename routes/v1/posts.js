@@ -58,48 +58,35 @@ router.get("/by-user", async (req, res) => {
         success: false,
         message: "Either username or PublicKeyBase58Check is required",
       });
+  }
+  const Username = username;
+  // const UsernamePrefix = username;
+  const NumToFetch = numToFetch || 1;
+  const dataStringForProf = {
+    PublicKeyBase58Check,
+    NumToFetch,
+    // Username,
+  };
+  const urlProf = bitclout_config.genUrl(bitclout_config.endPoints.getProfile);
 
-    const PublicKeyBase58Check = "";
-    const Username = username;
-    // const UsernamePrefix = username;
-    const NumToFetch = numToFetch || 1;
-
-    const dataString = {
-      PublicKeyBase58Check,
-      NumToFetch,
-      // Username,
-    };
-
-    const url = bitclout_config.genUrl(bitclout_config.endPoints.getProfile);
-
-    const response = await axios({
-      method: "POST",
-      url,
-      headers: bitclout_config.defaultHeaders,
-      data: dataString,
+  const response = await axios({
+    method: "POST",
+    url: urlProf,
+    headers: bitclout_config.defaultHeaders,
+    data: dataStringForProf,
+  });
+  if (response.status != 200)
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong. Please try again",
     });
 
-    if (response.status != 200)
-      return res.status(500).json({
-        success: false,
-        message: "Something went wrong. Please try again",
-      });
+  if (response.status == 200) {
+    const { data } = response;
 
-    if (response.status == 200) {
-      const { data } = response;
+    const { Profile } = data;
 
-      const { ProfilesFound } = data;
-
-      if (ProfilesFound) {
-        if (ProfilesFound.length > 1)
-          res.status(400).json({
-            success: false,
-            message: "Exact match to username is not found",
-          });
-
-        owner = delete ProfilesFound[0].Posts;
-      }
-    }
+    owner = Profile;
   }
 
   const url = bitclout_config.genUrl(
