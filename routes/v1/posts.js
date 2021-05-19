@@ -108,7 +108,7 @@ router.get("/by-user", async (req, res) => {
 
   let dataString = {
     PublicKeyBase58Check,
-    Username,
+    Username: username,
     NumToFetch: 300,
   };
 
