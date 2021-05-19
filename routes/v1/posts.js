@@ -132,6 +132,7 @@ router.get("/by-user", async (req, res) => {
           post = { ...post, owner };
           addPost(post);
           const hashTags = getHashTags(post.Body);
+          if (!hashTags) return;
           hashTags.forEach((hashtag) => {
             const hashtagObj = { hashtag, PostHashHex: post.PostHashHex, post };
             addHashTag(hashtagObj);
