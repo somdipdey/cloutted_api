@@ -44,6 +44,7 @@ router.get("/", (req, res) => {
 @access: PUBLIC
 */
 router.get("/by-user", async (req, res) => {
+  let owner;
   const payload = req.query;
 
   const { numToFetch } = payload;
@@ -96,13 +97,10 @@ router.get("/by-user", async (req, res) => {
             message: "Exact match to username is not found",
           });
 
-        PublicKeyBase58Check = ProfilesFound[0].PublicKeyBase58Check;
-        username = ProfilesFound[0].Username;
+        owner = delete ProfilesFound[0].Posts;
       }
     }
   }
-
-  const Username = username;
 
   const url = bitclout_config.genUrl(
     bitclout_config.endPoints.getPostForPubKey
@@ -125,13 +123,13 @@ router.get("/by-user", async (req, res) => {
         success: true,
         message: "Successfully fetched posts",
         dataLength: posts.length,
-        posts: [...posts],
+        posts: [...posts.map((post) => ({ ...post, owner }))],
       });
 
       posts.forEach(async (post) => {
         const isExists = await postDoesExist(post.PostHashHex);
         if (!isExists) {
-          post = { ...post, PublicKeyBase58Check, Username };
+          post = { ...post, owner };
           addPost(post);
           const hashTags = getHashTags(post.Body);
           hashTags.forEach((hashtag) => {
