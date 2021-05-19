@@ -17,7 +17,7 @@ const Post = require("../../models/Post");
 const getHashTags = require("../../helpers/getHashTags");
 
 /*
-@route: GET /v1/posts/
+@route: GET /v1/users/get-user/
 @desc: get all posts
 @access: PUBLIC
 */

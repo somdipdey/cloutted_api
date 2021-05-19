@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const postSchema = new mongoose.Schema();
 
 module.exports = findPosts = (query, options, cb) => {
-  mongoose.connection.db.collection("posts", (err, collection) => {
+  mongoose.connection.db.collection("posts2", (err, collection) => {
     if (err) {
       console.log(err);
     }

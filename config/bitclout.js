@@ -10,6 +10,7 @@ const defaultHeaders = {
 const endPoints = {
   getPostForPubKey: "get-posts-for-public-key",
   getProfiles: "get-profiles",
+  getProfile: "get-single-profile",
 };
 
 module.exports = {

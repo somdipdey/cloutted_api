@@ -49,32 +49,29 @@ router.get("/by-user", async (req, res) => {
   const { numToFetch } = payload;
 
   let PublicKeyBase58Check = req.query.PublicKeyBase58Check;
-  const username = req.query.username;
+  let username = req.query.username;
 
   if (!PublicKeyBase58Check) {
     if (!username)
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Either username or PublicKeyBase58Check is required",
       });
 
     const PublicKeyBase58Check = "";
-    const Username = "";
-    const UsernamePrefix = username;
+    const Username = username;
+    // const UsernamePrefix = username;
     const NumToFetch = numToFetch || 1;
-    const ReaderPublicKeyBase58Check = "";
 
     const dataString = {
       PublicKeyBase58Check,
       NumToFetch,
-      Username,
-      UsernamePrefix,
-      ReaderPublicKeyBase58Check,
+      // Username,
     };
 
-    const url = bitclout_config.genUrl(bitclout_config.endPoints.getProfiles);
+    const url = bitclout_config.genUrl(bitclout_config.endPoints.getProfile);
 
-    const reponse = await axios({
+    const response = await axios({
       method: "POST",
       url,
       headers: bitclout_config.defaultHeaders,
@@ -82,13 +79,13 @@ router.get("/by-user", async (req, res) => {
     });
 
     if (response.status != 200)
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         message: "Something went wrong. Please try again",
       });
 
-    if (reponse.status == 200) {
-      const { data } = reponse;
+    if (response.status == 200) {
+      const { data } = response;
 
       const { ProfilesFound } = data;
 
@@ -100,9 +97,12 @@ router.get("/by-user", async (req, res) => {
           });
 
         PublicKeyBase58Check = ProfilesFound[0].PublicKeyBase58Check;
+        username = ProfilesFound[0].Username;
       }
     }
   }
+
+  const Username = username;
 
   const url = bitclout_config.genUrl(
     bitclout_config.endPoints.getPostForPubKey
@@ -110,7 +110,7 @@ router.get("/by-user", async (req, res) => {
 
   let dataString = {
     PublicKeyBase58Check,
-    Username: "",
+    Username,
     NumToFetch: 300,
   };
 
@@ -121,6 +121,13 @@ router.get("/by-user", async (req, res) => {
     data: dataString,
   })
     .then(({ data: { Posts: posts } }) => {
+      res.status(200).json({
+        success: true,
+        message: "Successfully fetched posts",
+        dataLength: posts.length,
+        posts: [...posts],
+      });
+
       posts.forEach(async (post) => {
         const isExists = await postDoesExist(post.PostHashHex);
         if (!isExists) {
@@ -131,29 +138,9 @@ router.get("/by-user", async (req, res) => {
             const hashtagObj = { hashtag, PostHashHex: post.PostHashHex, post };
             addHashTag(hashtagObj);
             insertHashtagTrend(hashtag);
-
-            // finding and sending posts
-
-            const limit = 100;
-            findPosts({ PublicKeyBase58Check }, { limit }, (err, posts) => {
-              if (err) {
-                console.log(err);
-                res
-                  .status(500)
-                  .json({ success: false, message: "Something went wrong" });
-              }
-              res.status(200).json({
-                success: true,
-                message: "Successfully fetched posts",
-                dataLength: limit,
-                posts,
-              });
-            });
           });
         }
       });
-
-      res.status(200).json();
     })
     .catch((err) => {
       console.log(err);
