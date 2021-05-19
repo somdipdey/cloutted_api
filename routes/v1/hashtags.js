@@ -14,15 +14,19 @@ const Hashtags = require("../../models/Hashtags");
 @desc: get all hashtags
 @access: PUBLIC
 */
-router.get("/", (req, res) => {
+
+router.get("/", async (req, res) => {
   const { searchTerm, searchLimit } = req.query;
 
-  if (!searchTerm)
-    return res
-      .status(400)
-      .json({ success: false, message: "searchTerm is required" });
-  const limit = parseInt(searchLimit) || 100;
-  const query = { hashtag: { $regex: searchTerm, $options: "i" } };
+  const docCount = await getNumberHashtags();
+
+  // if (!searchTerm)
+  //   return res
+  //     .status(400)
+  //     .json({ success: false, message: "searchTerm is required" });
+  const limit = parseInt(searchLimit) || 300;
+  const query = {};
+  if (searchTerm) query["hashtag"] = { $regex: searchTerm, $options: "i" };
   findHashtags(query, { limit }, (err, hashtags) => {
     if (err) {
       console.log(err);
@@ -31,7 +35,8 @@ router.get("/", (req, res) => {
     res.status(200).json({
       success: true,
       message: "Successfully fetched hashtags",
-      dataLength: limit,
+      dataLength: hashtags.length,
+      totalHashtags: docCount,
       hashtags,
     });
   });

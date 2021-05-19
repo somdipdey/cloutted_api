@@ -9,6 +9,16 @@ module.exports = findHashtags = (query, options, cb) => {
   });
 };
 
+module.exports = getNumberHashtags = () =>
+  new Promise((resolve, _) => {
+    mongoose.connection.db.collection("hashtags", (err, collection) => {
+      if (err) {
+        console.log(err);
+      }
+      resolve(collection.countDocuments());
+    });
+  });
+
 module.exports = addHashTag = (data) =>
   mongoose.connection.db.collection("hashtags", (err, collection) => {
     if (err) console.log(err);
