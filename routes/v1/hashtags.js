@@ -16,7 +16,7 @@ const Hashtags = require("../../models/Hashtags");
 */
 
 router.get("/", async (req, res) => {
-  const { searchTerm, searchLimit } = req.query;
+  const { searchTerm, searchLimit, PublicKeyBase58Check } = req.query;
 
   const docCount = await getNumberHashtags();
 
@@ -27,6 +27,11 @@ router.get("/", async (req, res) => {
   const limit = parseInt(searchLimit) || 300;
   const query = {};
   if (searchTerm) query["hashtag"] = { $regex: searchTerm, $options: "i" };
+  if (!!PublicKeyBase58Check) {
+    query["post.owner.PublicKeyBase58Check"] = PublicKeyBase58Check;
+    delete query.hashtag;
+  }
+
   findHashtags(query, { limit }, (err, hashtags) => {
     if (err) {
       console.log(err);
