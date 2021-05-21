@@ -38,11 +38,11 @@ router.get("/", (req, res) => {
     const FetchUsersThatHODL = false;
     const AddGlobalFeedBool = false;
 
-    const body = {
+    const body = JSON.stringify({
       UsernamePrefix,
       FetchUsersThatHODL,
       AddGlobalFeedBool,
-    };
+    });
 
     const url = bitclout_config.genUrl(bitclout_config.endPoints.getProfiles);
 
@@ -55,20 +55,30 @@ router.get("/", (req, res) => {
 
     const callback = (error, response, body) => {
       if (!error && response.statusCode == 200) {
-        console.log(JSON.parse(body));
+        const { ProfilesFound } = JSON.parse(body);
+        const users =
+          ProfilesFound &&
+          ProfilesFound.slice(0, 10).map(
+            ({ PublicKeyBase58Check, Username, ProfilePic }) => ({
+              PublicKeyBase58Check,
+              Username,
+              ProfilePic,
+            })
+          );
+
+        // get all users
+        return res.json({
+          success: true,
+          message: "user names of all the users in db",
+          dataLength: users.length,
+          users,
+        });
       }
     };
 
     // return;
 
     request(options, callback);
-
-    // get all users
-    return res.json({
-      success: true,
-      message: "user names of all the users in db",
-      users: "dara bara",
-    });
   } catch (err) {
     console.log(err);
   }
