@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 
+const collectionName = "posts";
+
 //post schema
 const postSchema = new mongoose.Schema();
 
 module.exports = findPosts = (query, options, cb) => {
-  mongoose.connection.db.collection("posts2", (err, collection) => {
+  mongoose.connection.db.collection(collectionName, (err, collection) => {
     if (err) {
       console.log(err);
     }
@@ -21,7 +23,7 @@ module.exports = postDoesExist = (PostHashHex) =>
   });
 
 module.exports = addPost = (data) => {
-  mongoose.connection.db.collection("posts2", (err, collection) => {
+  mongoose.connection.db.collection(collectionName, (err, collection) => {
     if (err) console.log(err);
     const res = collection.insertOne(data);
   });
