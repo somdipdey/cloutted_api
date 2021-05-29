@@ -23,7 +23,7 @@ router.get("/", (req, res) => {
   if (searchTerm)
     query = { ...query, hashtag: { $regex: searchTerm, $options: "i" } };
 
-  const limit = searchLimit || 10;
+  const limit = parseInt(searchLimit) || 10;
   const sort = { count: -1 };
   findHashtagTrends(query, { limit, sort }, (err, hashtagTrends) => {
     if (err) {
