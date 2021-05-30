@@ -28,7 +28,7 @@ module.exports = insertHashtagTrend = (hashtag) => {
         const count = parseInt(resData.count) + 1;
         const newObject = { ...resData, count };
         try {
-          await collection.findOneAndReplace({ _id: resData._id }, newObject);
+          collection.findOneAndReplace({ _id: resData._id }, newObject);
         } catch (err) {
           console.log(err);
         }
