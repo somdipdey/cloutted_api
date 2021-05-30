@@ -45,12 +45,9 @@ router.get("/", (req, res) => {
 */
 router.get("/by-user", async (req, res) => {
   let owner;
-  const payload = req.query;
-
-  const { numToFetch } = payload;
 
   let PublicKeyBase58Check = req.query.PublicKeyBase58Check;
-  let username = req.query.username;
+  let username = req.query.Username;
 
   if (!PublicKeyBase58Check) {
     if (!username)
@@ -61,11 +58,11 @@ router.get("/by-user", async (req, res) => {
   }
   const Username = username;
   // const UsernamePrefix = username;
-  const NumToFetch = numToFetch || 1;
+  const NumToFetch = 300;
   const dataStringForProf = {
     PublicKeyBase58Check,
     NumToFetch,
-    // Username,
+    Username,
   };
   const urlProf = bitclout_config.genUrl(bitclout_config.endPoints.getProfile);
 
@@ -109,7 +106,7 @@ router.get("/by-user", async (req, res) => {
       res.status(200).json({
         success: true,
         message: "Successfully fetched posts",
-        dataLength: posts.length,
+        dataLength: posts ? posts.length : 0,
         posts: [...posts.map((post) => ({ ...post, owner }))],
       });
 

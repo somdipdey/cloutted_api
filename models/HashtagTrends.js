@@ -22,7 +22,6 @@ module.exports = insertHashtagTrend = (hashtag) => {
           count: 1,
         };
         collection.insertOne(newHashtagTrend);
-        resolve();
         return;
       } else {
         const count = parseInt(resData.count) + 1;
@@ -32,7 +31,6 @@ module.exports = insertHashtagTrend = (hashtag) => {
         } catch (err) {
           console.log(err);
         }
-        resolve();
       }
     });
   });
