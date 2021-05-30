@@ -1,6 +1,8 @@
 const getHashTags = (inputString) => {
-  //const regex = /#(\w+|\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]+)/g;
-  const regex = /#\S+/g;
+  // const regex = /#\S+/g;
+
+  const regex =
+    /#(\w+|(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])+)/g;
 
   const matchTexts = inputString.match(regex);
 

@@ -15,7 +15,7 @@ module.exports = findPosts = (query, options, cb) => {
 };
 
 module.exports = postDoesExist = (PostHashHex) =>
-  new Promise((resolve, reject) => {
+  new Promise((resolve, _) => {
     findPosts({ PostHashHex }, { limit: 1 }, (err, posts) => {
       if (posts && posts.length > 0) resolve(true);
       else resolve(false);

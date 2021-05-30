@@ -16,11 +16,24 @@ module.exports = findHashtagTrends = (query, options, cb) => {
 module.exports = insertHashtagTrend = (hashtag) => {
   mongoose.connection.db.collection("hashtrends", (err, collection) => {
     collection.findOne({ hashtag }, (err, resData) => {
-      if (!resData) return collection.insertOne(resData);
-      collection.findOneAndUpdate(
-        { _id: resData._id },
-        { count: resData.count + 1 }
-      );
+      if (!resData) {
+        const newHashtagTrend = {
+          hashtag,
+          count: 1,
+        };
+        collection.insertOne(newHashtagTrend);
+        resolve();
+        return;
+      } else {
+        const count = parseInt(resData.count) + 1;
+        const newObject = { ...resData, count };
+        try {
+          await collection.findOneAndReplace({ _id: resData._id }, newObject);
+        } catch (err) {
+          console.log(err);
+        }
+        resolve();
+      }
     });
   });
 };
