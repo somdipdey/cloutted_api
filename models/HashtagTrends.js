@@ -2,10 +2,12 @@ const mongoose = require("mongoose");
 
 //post schema
 
+const collectionName = "hashtrends";
+
 const hashtagTrendsSchema = new mongoose.Schema();
 
 module.exports = findHashtagTrends = (query, options, cb) => {
-  mongoose.connection.db.collection("hashtrends", (err, collection) => {
+  mongoose.connection.db.collection(collectionName, (err, collection) => {
     if (err) {
       console.log(err);
     }
@@ -14,7 +16,7 @@ module.exports = findHashtagTrends = (query, options, cb) => {
 };
 
 module.exports = insertHashtagTrend = (hashtag) => {
-  mongoose.connection.db.collection("hashtrends", (err, collection) => {
+  mongoose.connection.db.collection(collectionName, (err, collection) => {
     collection.findOne({ hashtag }, (err, resData) => {
       if (!resData) {
         const newHashtagTrend = {
