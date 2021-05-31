@@ -32,7 +32,9 @@ router.get("/", async (req, res) => {
     delete query.hashtag;
   }
 
-  findHashtags(query, { limit }, (err, hashtags) => {
+  const sort = { "post.TimestampNanos": -1 };
+
+  findHashtags(query, { limit, sort }, (err, hashtags) => {
     if (err) {
       console.log(err);
       res.status(500).json({ success: false, message: "Something went wrong" });
