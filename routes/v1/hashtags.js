@@ -26,7 +26,8 @@ router.get("/", async (req, res) => {
   //     .json({ success: false, message: "searchTerm is required" });
   const limit = parseInt(searchLimit) || 300;
   const query = {};
-  if (searchTerm) query["hashtag"] = { $regex: searchTerm, $options: "i" };
+  if (searchTerm)
+    query["hashtag"] = { $regex: `^${searchTerm}`, $options: "i" };
   if (!!Username) {
     query["post.owner.Username"] = Username;
     delete query.hashtag;

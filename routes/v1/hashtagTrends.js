@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
   let query = {};
 
   if (searchTerm)
-    query = { ...query, hashtag: { $regex: searchTerm, $options: "i" } };
+    query = { ...query, hashtag: { $regex: `^${searchTerm}`, $options: "i" } };
 
   const limit = parseInt(searchLimit) || 10;
   const sort = { count: -1 };
