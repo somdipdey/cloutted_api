@@ -47,12 +47,31 @@ const hashtags = require("./routes/v1/hashtags");
 const posts = require("./routes/v1/posts");
 const hashtagtrends = require("./routes/v1/hashtagTrends");
 const users = require("./routes/v1/users");
+const { request } = require("http");
+const { default: axios } = require("axios");
 
 // register routes
 app.use("/v1/hashtags", hashtags);
 app.use("/v1/hashtagtrends", hashtagtrends);
 app.use("/v1/posts", posts);
 app.use("/v1/users", users);
+
+app.get("/v1/getRate", (req, res) => {
+  const url = "https://api.bitclout.com/api/v0/get-exchange-rate";
+
+  axios
+    .get(url)
+    .then((response) => {
+      const satoshiRate = response.data.SatoshisPerBitCloutExchangeRate;
+
+      res.json({ success: true, satoshiRate });
+    })
+    .catch((err) =>
+      res
+        .status(500)
+        .json({ success: false, message: "Some internal error occured" })
+    );
+});
 
 // 404 route
 app.get("*", (_, res) => {
