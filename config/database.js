@@ -2,7 +2,7 @@ const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
-  poolSize: process.env.POOL_SIZE || 5,
+  poolSize: process.env.POOL_SIZE || 40,
   // dbName: "cloutted_dev",
 };
 
