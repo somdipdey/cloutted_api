@@ -91,12 +91,12 @@ router.get("/", (req, res) => {
 */
 router.get("/get-user", async (req, res) => {
   try {
-    const { PublicKeyBase58Check } = req.query;
+    const { PublicKeyBase58Check, Username } = req.query;
 
-    if (!PublicKeyBase58Check)
+    if (!PublicKeyBase58Check && !Username)
       return res.status(400).json({
         success: false,
-        message: "PublicKeyBase58Check is required",
+        message: "PublicKeyBase58Check or Usernamer is required",
       });
 
     const NumToFetch = 1;
@@ -104,6 +104,7 @@ router.get("/get-user", async (req, res) => {
     const dataString = {
       PublicKeyBase58Check,
       NumToFetch,
+      Username,
     };
 
     const url = bitclout_config.genUrl(bitclout_config.endPoints.getProfiles);
@@ -146,7 +147,8 @@ router.get("/get-user", async (req, res) => {
   } catch (err) {
     res.status(400).json({
       success: false,
-      message: "Could not found profile with the provided PublicKeyBase58Check",
+      message:
+        "Could not found profile with the provided PublicKeyBase58Check or Username",
     });
   }
 });
