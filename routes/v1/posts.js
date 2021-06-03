@@ -65,81 +65,69 @@ router.get("/by-user", async (req, res) => {
     Username,
   };
   const urlProf = bitclout_config.genUrl(bitclout_config.endPoints.getProfile);
-  try {
-    const response = await axios({
-      method: "POST",
-      url: urlProf,
-      headers: bitclout_config.defaultHeaders,
-      data: dataStringForProf,
-    });
-    if (response.status != 200)
-      return res.status(500).json({
-        success: false,
-        message: "Something went wrong. Please try again",
-      });
 
-    if (response.status == 200) {
-      const { data } = response;
-
-      const { Profile } = data;
-
-      owner = Profile;
-    }
-
-    const url = bitclout_config.genUrl(
-      bitclout_config.endPoints.getPostForPubKey
-    );
-
-    let dataString = {
-      PublicKeyBase58Check,
-      Username: username,
-      NumToFetch: 300,
-    };
-
-    axios({
-      method: "POST",
-      url,
-      headers: bitclout_config.defaultHeaders,
-      data: dataString,
-    })
-      .then(({ data: { Posts: posts } }) => {
-        res.status(200).json({
-          success: true,
-          message: "Successfully fetched posts",
-          dataLength: posts ? posts.length : 0,
-          posts: [...posts.map((post) => ({ ...post, owner }))],
-        });
-
-        posts.forEach(async (post) => {
-          const isExists = await postDoesExist(post.PostHashHex);
-          if (!isExists) {
-            post = { ...post, owner };
-            addPost(post);
-            const hashTags = getHashTags(post.Body);
-            if (!hashTags) return;
-            hashTags.forEach((hashtag) => {
-              const hashtagObj = {
-                hashtag,
-                PostHashHex: post.PostHashHex,
-                post,
-              };
-              addHashTag(hashtagObj);
-              insertHashtagTrend(hashtag);
-            });
-          }
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ success: false, message: "Some error occured" });
-      });
-  } catch (err) {}
-  return res
-    .status(400)
-    .json({
+  const response = await axios({
+    method: "POST",
+    url: urlProf,
+    headers: bitclout_config.defaultHeaders,
+    data: dataStringForProf,
+  });
+  if (response.status != 200)
+    return res.status(500).json({
       success: false,
-      message:
-        "Could not get data for Username or PublicBase58Key. Try a different one.",
+      message: "Something went wrong. Please try again",
+    });
+
+  if (response.status == 200) {
+    const { data } = response;
+
+    const { Profile } = data;
+
+    owner = Profile;
+  }
+
+  const url = bitclout_config.genUrl(
+    bitclout_config.endPoints.getPostForPubKey
+  );
+
+  let dataString = {
+    PublicKeyBase58Check,
+    Username: username,
+    NumToFetch: 300,
+  };
+
+  axios({
+    method: "POST",
+    url,
+    headers: bitclout_config.defaultHeaders,
+    data: dataString,
+  })
+    .then(({ data: { Posts: posts } }) => {
+      res.status(200).json({
+        success: true,
+        message: "Successfully fetched posts",
+        dataLength: posts ? posts.length : 0,
+        posts: [...posts.map((post) => ({ ...post, owner }))],
+      });
+
+      posts.forEach(async (post) => {
+        const isExists = await postDoesExist(post.PostHashHex);
+        if (!isExists) {
+          post = { ...post, owner };
+          addPost(post);
+          const hashTags = getHashTags(post.Body);
+          if (!hashTags) return;
+          hashTags.forEach((hashtag) => {
+            const hashtagObj = { hashtag, PostHashHex: post.PostHashHex, post };
+            addHashTag(hashtagObj);
+            insertHashtagTrend(hashtag);
+          });
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ success: false, message: "Some error occured" });
     });
 });
 
