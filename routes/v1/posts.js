@@ -23,7 +23,7 @@ const getHashTags = require("../../helpers/getHashTags");
 */
 router.get("/", (req, res) => {
   const payload = req.body;
-  const limit = 300;
+  const limit = 100;
   findPosts({}, { limit }, (err, posts) => {
     if (err) {
       console.log(err);
@@ -61,7 +61,7 @@ router.get("/by-user", async (req, res) => {
     }
     const Username = username;
     // const UsernamePrefix = username;
-    const NumToFetch = 300;
+    const NumToFetch = 100;
     const dataStringForProf = {
       PublicKeyBase58Check,
       NumToFetch,
@@ -100,7 +100,7 @@ router.get("/by-user", async (req, res) => {
     let dataString = {
       PublicKeyBase58Check,
       Username: username,
-      NumToFetch: 300,
+      NumToFetch: 100,
     };
 
     axios({
