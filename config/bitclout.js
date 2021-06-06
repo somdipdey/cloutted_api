@@ -11,10 +11,11 @@ const endPoints = {
   getPostForPubKey: "get-posts-for-public-key",
   getProfiles: "get-profiles",
   getProfile: "get-single-profile",
+  getRate: "get-exchange-rate",
 };
 
 module.exports = {
   defaultHeaders,
   endPoints,
-  genUrl: (endpoint) => `https://api.bitclout.com/${endpoint}`,
+  genUrl: (endpoint) => `https://api.bitclout.com/api/v0/${endpoint}`,
 };

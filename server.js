@@ -49,6 +49,7 @@ const hashtagtrends = require("./routes/v1/hashtagTrends");
 const users = require("./routes/v1/users");
 const { request } = require("http");
 const { default: axios } = require("axios");
+const bitclout_config = require("./config/bitclout");
 
 // register routes
 app.use("/v1/hashtags", hashtags);
@@ -57,7 +58,7 @@ app.use("/v1/posts", posts);
 app.use("/v1/users", users);
 
 app.get("/v1/getRate", (req, res) => {
-  const url = "https://api.bitclout.com/api/v0/get-exchange-rate";
+  const url = bitclout_config.genUrl(bitclout_config.endPoints.getRate);
 
   axios
     .get(url)
