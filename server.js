@@ -5,6 +5,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const cors = require("cors");
+const { request } = require("http");
+const { default: axios } = require("axios");
+const bitclout_config = require("./config/bitclout");
 
 // import local packages and files
 const db_config = require("./config/database");
@@ -47,15 +50,14 @@ const hashtags = require("./routes/v1/hashtags");
 const posts = require("./routes/v1/posts");
 const hashtagtrends = require("./routes/v1/hashtagTrends");
 const users = require("./routes/v1/users");
-const { request } = require("http");
-const { default: axios } = require("axios");
-const bitclout_config = require("./config/bitclout");
+const trending = require("./routes/v1/trending");
 
 // register routes
 app.use("/v1/hashtags", hashtags);
 app.use("/v1/hashtagtrends", hashtagtrends);
 app.use("/v1/posts", posts);
 app.use("/v1/users", users);
+app.use("/v1/trending", trending);
 
 app.get("/v1/getRate", (req, res) => {
   const url = bitclout_config.genUrl(bitclout_config.endPoints.getRate);
