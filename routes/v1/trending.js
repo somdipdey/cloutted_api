@@ -22,7 +22,7 @@ const getHashTags = require("../../helpers/getHashTags");
 @access: PUBLIC
 */
 router.get("/", (req, res) => {
-  const { offset } = req.query;
+  const { offset, resLimit } = req.query;
 
   const timeNow = new Date().getTime();
   const startTime =
@@ -41,7 +41,7 @@ router.get("/", (req, res) => {
     "post.LikeCount": -1,
   };
 
-  const limit = 100;
+  const limit = resLimit || 100;
   findHashtags(timeQuery, { limit, sort: trendSort }, (err, posts) => {
     if (err) {
       console.log(err);
