@@ -41,7 +41,7 @@ router.get("/", (req, res) => {
     "post.LikeCount": -1,
   };
 
-  const limit = resLimit || 100;
+  const limit = parseInt(resLimit) || 100;
   findHashtags(timeQuery, { limit, sort: trendSort }, (err, posts) => {
     if (err) {
       console.log(err);
