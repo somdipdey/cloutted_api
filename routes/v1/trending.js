@@ -42,7 +42,7 @@ router.get("/", (req, res) => {
   };
 
   const limit = parseInt(resLimit) || 100;
-  findHashtags(timeQuery, { limit, sort: trendSort }, (err, posts) => {
+  findHashtags(timeQuery, { sort: trendSort, limit }, (err, posts) => {
     if (err) {
       console.log(err);
       return res
