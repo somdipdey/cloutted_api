@@ -63,7 +63,7 @@ router.get("/frequency", (req, res) => {
 
   const timeNow = new Date().getTime();
   const startTime =
-    new Date(timeNow - parseInt(offset || 960) * 60 * 60 * 1000).getTime() *
+    new Date(timeNow - parseInt(offset || 6) * 60 * 60 * 1000).getTime() *
     Math.pow(10, 6);
   const endTime = timeNow * Math.pow(10, 6);
 
