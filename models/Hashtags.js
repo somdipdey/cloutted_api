@@ -9,6 +9,26 @@ module.exports = findHashtags = (query, options, cb) => {
   });
 };
 
+module.exports = getTrendings = (timeQuery, cb) => {
+  mongoose.connection.db.collection("hashtags", (err, collection) => {
+    if (err) {
+      console.log(err);
+    }
+    collection
+      .aggregate([
+        {
+          $match: {
+            timeQuery,
+          },
+        },
+        {
+          $count: "hashtag",
+        },
+      ])
+      .toArray(cb);
+  });
+};
+
 module.exports = getNumberHashtags = () =>
   new Promise((resolve, _) => {
     mongoose.connection.db.collection("hashtags", (err, collection) => {
