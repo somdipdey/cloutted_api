@@ -74,7 +74,7 @@ router.get("/frequency", (req, res) => {
     },
   };
 
-  getTrendings(timeQuery, (err, posts) => {
+  getTrendings(timeQuery, resLimit, (err, posts) => {
     if (err) {
       console.log(err);
       return res
@@ -83,7 +83,6 @@ router.get("/frequency", (req, res) => {
     }
 
     if (posts) {
-      posts = posts.slice(resLimit || 10);
       return res.status(200).json({
         success: true,
         message: "Successfully fetched posts",

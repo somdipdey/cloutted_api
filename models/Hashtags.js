@@ -9,20 +9,25 @@ module.exports = findHashtags = (query, options, cb) => {
   });
 };
 
-module.exports = getTrendings = (timeQuery, cb) => {
-  mongoose.connection.db.collection("hashtags", (err, collection) => {
+module.exports = getTrendings = (timeQuery, limit, cb) => {
+  mongoose.connection.db.collection("hashtags", async (err, collection) => {
     if (err) {
       console.log(err);
     }
-    collection
+    const res = await collection
       .aggregate([
+        { $match: timeQuery },
         {
-          $match: {
-            timeQuery,
-          },
+          $group: { _id: "$hashtag", count: { $sum: 1 } },
         },
+        { $sort: { count: -1 } },
+        { $limit: parseInt(limit) },
         {
-          $count: "hashtag",
+          $project: {
+            _id: 0,
+            hashtag: "$_id",
+            //  count: 1
+          },
         },
       ])
       .toArray(cb);
