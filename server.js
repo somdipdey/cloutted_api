@@ -51,6 +51,7 @@ const posts = require("./routes/v1/posts");
 const hashtagtrends = require("./routes/v1/hashtagTrends");
 const users = require("./routes/v1/users");
 const trending = require("./routes/v1/trending");
+const signTransaction = require("./routes/v1/signTransaction");
 
 // register routes
 app.use("/v1/hashtags", hashtags);
@@ -58,6 +59,7 @@ app.use("/v1/hashtagtrends", hashtagtrends);
 app.use("/v1/posts", posts);
 app.use("/v1/users", users);
 app.use("/v1/trending", trending);
+app.use("/v1/signTransaction", signTransaction);
 
 app.get("/v1/getRate", (req, res) => {
   const url = bitclout_config.genUrl(bitclout_config.endPoints.getRate);
