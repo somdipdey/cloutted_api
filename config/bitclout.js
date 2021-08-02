@@ -12,6 +12,8 @@ const endPoints = {
   getProfiles: "get-profiles",
   getProfile: "get-single-profile",
   getRate: "get-exchange-rate",
+  createLike: "create-like-stateless",
+  submitTransaction: "submit-transaction",
 };
 
 module.exports = {
